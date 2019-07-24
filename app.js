@@ -15,9 +15,13 @@ const paddleWidth=100;
 const  paddleHeight=10;
 let paddleX=400;
 
-const BRICK_W=100;
-const BRICK_H=50;
-const Brick_count=4;
+const BRICK_W=80;
+const BRICK_H=20;
+const Brick_col=10;
+const Brick_row=14;
+ let brickGrid=new Array(Brick_row*Brick_col);
+
+brickReset();
 canvas.addEventListener('mousemove',updateMousepos);
  function updateMousepos(e){
      var rect=canvas.getBoundingClientRect();
@@ -26,6 +30,24 @@ canvas.addEventListener('mousemove',updateMousepos);
 
     paddleX=MouseX-paddleWidth/2;
 }
+
+function brickReset() {
+
+        for (let i = 0; i < Brick_col*Brick_row; i++) {
+            if (Math.random() < 0.5) {
+                brickGrid[i] = true;
+            } else {
+                brickGrid[i] = false;
+            }
+
+        }
+
+
+
+}
+
+
+
 
 
 
@@ -38,7 +60,17 @@ function updateAll(){
 
 }
 function drawBricks() {
-     colorRect(0,0,BRICK_W,BRICK_H,'blue');
+    for (let j = 0; j <Brick_row ; j++) {
+        for (let i = 0; i <Brick_col ; i++) {
+            let tf=Brick_col*j+i;
+            if(brickGrid[tf]){
+                colorRect(BRICK_W*i,BRICK_H*j,BRICK_W-2,BRICK_H-2,'blue');
+            }
+        }
+    }
+
+
+
 
 }
 function ballReset(){
@@ -49,7 +81,7 @@ let framesPersecond=30;
 setInterval(updateAll,1000/framesPersecond);
 
 function drawAll() {
-   colorRect(0,0,canvas.width,canvas.height,'black');
+    colorRect(0,0,canvas.width,canvas.height,'black');
    colorRect(paddleX,canvas.height-paddleHeight,paddleWidth,paddleHeight,'white');
    colorball(ballX,ballY,10,0,Math.PI*2,true);
    drawBricks();
