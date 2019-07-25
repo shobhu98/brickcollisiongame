@@ -15,18 +15,22 @@ const paddleWidth=100;
 const  paddleHeight=10;
 let paddleX=400;
 
+
 const BRICK_W=80;
 const BRICK_H=20;
 const Brick_col=10;
 const Brick_row=14;
  let brickGrid=new Array(Brick_row*Brick_col);
-
+let MouseX;
+let MouseY;
 brickReset();
 canvas.addEventListener('mousemove',updateMousepos);
  function updateMousepos(e){
      var rect=canvas.getBoundingClientRect();
      var root=document.documentElement;
-    var MouseX=e.clientX-rect.left-root.scrollLeft;
+    MouseX=e.clientX-rect.left-root.scrollLeft;
+    MouseY=e.clientY-rect.top-root.scrollTop;
+
 
     paddleX=MouseX-paddleWidth/2;
 }
@@ -34,11 +38,11 @@ canvas.addEventListener('mousemove',updateMousepos);
 function brickReset() {
 
         for (let i = 0; i < Brick_col*Brick_row; i++) {
-            if (Math.random() < 0.5) {
+
                 brickGrid[i] = true;
-            } else {
-                brickGrid[i] = false;
-            }
+            // } else {
+            //     brickGrid[i] = false;
+            // }
 
         }
 
@@ -59,10 +63,16 @@ function updateAll(){
 
 
 }
+function boolean(i,j,k) {
+     let tf=k*j+i;
+     return tf;
+
+
+}
 function drawBricks() {
     for (let j = 0; j <Brick_row ; j++) {
         for (let i = 0; i <Brick_col ; i++) {
-            let tf=Brick_col*j+i;
+            let tf=boolean(i,j,Brick_col);
             if(brickGrid[tf]){
                 colorRect(BRICK_W*i,BRICK_H*j,BRICK_W-2,BRICK_H-2,'blue');
             }
@@ -85,6 +95,12 @@ function drawAll() {
    colorRect(paddleX,canvas.height-paddleHeight,paddleWidth,paddleHeight,'white');
    colorball(ballX,ballY,10,0,Math.PI*2,true);
    drawBricks();
+
+
+
+
+
+
 
 
 
@@ -117,6 +133,14 @@ function moveAll() {
     if(ballY<0){
 
         ballSpeedY*=-1;
+    }
+    let mouseBrickCol=Math.floor(ballX/BRICK_W);
+    let mouseBrickRow=Math.floor(ballY/BRICK_H);
+
+    let brickunderMouse=boolean(mouseBrickCol,mouseBrickRow,10);
+
+    if(brickunderMouse>=0&&brickunderMouse<Brick_col*Brick_row){
+        brickGrid[brickunderMouse]=false;
     }
     let paddleAboveY= canvas.height-paddleHeight;
     let paddlebelowY=paddleAboveY+paddleHeight;
