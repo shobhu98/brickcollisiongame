@@ -8,6 +8,10 @@ let ballX=75;
 let ballY=75;
 let ballspeedX=5;
 let ballspeedY=5;
+const brickWidth=100;
+const brickHeight=75;
+const brickCol=8;
+const brickRow=3;
 const paddleWidth=100;
 const  paddleHeight=10
 let paddleX=400;
@@ -28,11 +32,26 @@ function update() {
     draw();
     move();
 }
+function drawbricks() {
+    for (let j = 0; j <brickRow ; j++) {
+        for (let i = 0; i <brickCol ; i++) {
+            drawrect(brickWidth*i,brickHeight*j,brickWidth-2,brickHeight-2,'blue');
 
+        }
+
+    }
+
+}
+function boolean() {
+
+
+}
 function draw() {
     drawrect(0,0,canvas.width,canvas.height,'black');
     drawrect(paddleX,canvas.height-paddleHeight*2,paddleWidth,paddleHeight,'white');
-    drawcircle(ballX,ballY,10,0,Math.PI*2,true)
+    drawbricks();
+
+    drawcircle(ballX,ballY,10,0,Math.PI*2,true);
 
 }
 function drawrect(x,y,w,h,color) {
